@@ -5,7 +5,7 @@ autoinstall:
       hostname: patrimonio-desktop
       username: admlocal
       password: '$y$j9T$TH8Uffo23x//VhuiereEP/$W02uXVLFdleOsnKD9tNNLmZx0kqAymUoHyxsedPBjTD'
-  locale: pt_BR.utf8
+  locale: pt_BR.UTF-8  # Configuração correta do idioma
   keyboard:
       layout: br
   timezone: "America/Recife"
@@ -20,23 +20,25 @@ autoinstall:
             ptable: gpt
             wipe: superblock-recursive
             partitions:
-                - size: 1G
+                - size: 1G  # Partição EFI
                   flag: boot
                   grub_device: true
                   fstype: fat32
                   mountpoint: /boot/efi
-                - size: 50G
+                - size: 20G  # Sistema principal
                   wipe: superblock-recursive
                   fstype: ext4
                   mountpoint: /
-                - size: 4G
+                - size: 4G  # Partição Swap
                   wipe: superblock-recursive
-                  fstype: ext4
-                  mountpoint: swap
-                - size: -1
+                  fstype: swap
+                - size: -1  # Todo o espaço restante para /home (~25GB)
                   wipe: superblock-recursive
                   fstype: ext4
                   mountpoint: /home
   updates: all
-  shutdown: reboot
-  
+  power_state:  # Garante que o sistema reinicie ao final da instalação
+      mode: reboot
+      message: "Reiniciando após a instalação..."
+      timeout: 30
+      condition: always
