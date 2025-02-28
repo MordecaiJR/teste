@@ -11,7 +11,7 @@ autoinstall:
     layout: br
   timezone: "America/Recife"
   storage:
-    wipe: superblock-recursive  # Garante que todas as partições anteriores sejam apagadas corretamente
+    wipe: superblock-recursive  # Garante que todas as partições sejam apagadas antes de criar novas
     layout:
       name: custom
     config:
@@ -19,30 +19,40 @@ autoinstall:
         type: disk
         match: sda
         ptable: gpt
-        wipe: superblock-recursive
+        wipe: superblock  # Força a formatação completa do disco
+        preserve: false  # Garante que as partições antigas não sejam preservadas
         partitions:
-          - type: partition
+          - id: part1
+            type: partition
             number: 1
             size: 1G
             flag: boot
             fstype: fat32
+            preserve: false
+            grub_device: true
             mountpoint: /boot/efi
-          - type: partition
+          - id: part2
+            type: partition
             number: 2
-            size: 40G
-            wipe: superblock-recursive
+            size: 20G
+            wipe: superblock
             fstype: ext4
+            preserve: false
             mountpoint: /
-          - type: partition
+          - id: part3
+            type: partition
             number: 3
             size: 4G
-            wipe: superblock-recursive
+            wipe: superblock
             fstype: swap
-          - type: partition
+            preserve: false
+          - id: part4
+            type: partition
             number: 4
             size: -1
-            wipe: superblock-recursive
+            wipe: superblock
             fstype: ext4
+            preserve: false
             mountpoint: /home
   updates: all
   power_state:
