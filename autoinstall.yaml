@@ -1,6 +1,7 @@
 #cloud-config
 autoinstall:
   version: 1
+  schema: autoinstall-v1
   interactive-sections: []
   identity:
     hostname: patrimonio-desktop
@@ -11,17 +12,17 @@ autoinstall:
     layout: br
   timezone: "America/Recife"
   storage:
-    reset-partitions: true  # Apaga todas as partições antes da instalação
+    reset-partitions: true
     wipe: superblock-recursive
     layout:
-      name: raw  # Alterado de 'custom' para 'raw' para garantir que o instalador não aplique um particionamento automático
+      name: raw
     config:
       - id: disk0
         type: disk
-        match: largest  # Detecta automaticamente o maior disco disponível
-        ptable: gpt  # Se a VM estiver em modo Legacy (BIOS), troque para "mbr"
+        match: largest
+        ptable: gpt
         wipe: superblock-recursive
-        overwrite: true  # Garante que qualquer esquema de partição existente seja apagado antes da instalação
+        overwrite: true
         partitions:
           - type: partition
             size: 1G
