@@ -1,7 +1,7 @@
 #cloud-config
 autoinstall:
   version: 1
-  schema: autoinstall-v1  # Garante compatibilidade com o instalador
+  interactive-sections: []
   identity:
     hostname: patrimonio-desktop
     username: admlocal
@@ -26,7 +26,7 @@ autoinstall:
             grub_device: true
             fstype: fat32
             mountpoint: /boot/efi
-          - size: 40G
+          - size: 20G
             wipe: superblock-recursive
             fstype: ext4
             mountpoint: /
@@ -38,8 +38,4 @@ autoinstall:
             fstype: ext4
             mountpoint: /home
   updates: all
-  power_state:
-    mode: reboot
-    message: "Reiniciando após a instalação..."
-    timeout: 30
-    condition: always
+  shutdown: reboot
