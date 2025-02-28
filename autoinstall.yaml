@@ -17,7 +17,7 @@ autoinstall:
       config:
           - id: disk0
             type: disk
-            match: largest  # Auto detecta o maior disco disponível
+            match: largest  
             ptable: gpt
             wipe: superblock-recursive
             partitions:
@@ -25,11 +25,15 @@ autoinstall:
                   flag: boot
                   grub_device: true
                   fstype: fat32
-                  mountpoint: /boot
-                - size: 60G
+                  mountpoint: /boot/efi
+                - size: 50G
                   wipe: superblock-recursive
                   fstype: ext4
                   mountpoint: /
+                  - size: 4G
+                  wipe: superblock-recursive
+                  fstype: ext4
+                  mountpoint: swap
                 - size: -1
                   wipe: superblock-recursive
                   fstype: ext4
