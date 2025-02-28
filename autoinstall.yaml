@@ -17,7 +17,7 @@ autoinstall:
     config:
       - id: disk0
         type: disk
-        match: largest  
+        match: sda  # Especificando diretamente para evitar problemas com "largest"
         ptable: gpt
         wipe: superblock-recursive
         partitions:
