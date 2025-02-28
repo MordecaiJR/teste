@@ -30,7 +30,7 @@ autoinstall:
                   wipe: superblock-recursive
                   fstype: ext4
                   mountpoint: /
-                  - size: 4G
+                - size: 4G
                   wipe: superblock-recursive
                   fstype: ext4
                   mountpoint: swap
