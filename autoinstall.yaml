@@ -5,7 +5,6 @@ autoinstall:
       hostname: patrimonio-desktop
       username: admlocal
       password: '$y$j9T$TH8Uffo23x//VhuiereEP/$W02uXVLFdleOsnKD9tNNLmZx0kqAymUoHyxsedPBjTD'
-      groups: sudo
   locale: pt_BR.utf8
   keyboard:
       layout: br
