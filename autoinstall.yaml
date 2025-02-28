@@ -2,7 +2,7 @@
 autoinstall:
   version: 1
   identity:
-      hostname: patrimonio-desktop
+      hostname: desktop-desktop
       username: admlocal
       password: '$y$j9T$TH8Uffo23x//VhuiereEP/$W02uXVLFdleOsnKD9tNNLmZx0kqAymUoHyxsedPBjTD'
   locale: pt_BR.utf8
