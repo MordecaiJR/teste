@@ -11,48 +11,36 @@ autoinstall:
     layout: br
   timezone: "America/Recife"
   storage:
-    wipe: superblock-recursive  # Garante que todas as partições sejam apagadas antes de criar novas
+    reset-partitions: true  # Remove todas as partições existentes antes da instalação
+    wipe: superblock-recursive  # Apaga todas as partições antes da instalação
     layout:
       name: custom
     config:
       - id: disk0
         type: disk
-        match: sda
-        ptable: gpt
-        wipe: superblock  # Força a formatação completa do disco
-        preserve: false  # Garante que as partições antigas não sejam preservadas
+        match: largest  # Agora detecta automaticamente o maior disco disponível
+        ptable: gpt  # Se a VM estiver em modo Legacy (MBR), troque para "mbr"
+        wipe: superblock-recursive  # Garante que o disco será formatado corretamente
+        overwrite: true  # Força a substituição de qualquer configuração de disco existente
         partitions:
-          - id: part1
-            type: partition
-            number: 1
+          - type: partition
             size: 1G
             flag: boot
             fstype: fat32
-            preserve: false
-            grub_device: true
             mountpoint: /boot/efi
-          - id: part2
-            type: partition
-            number: 2
+          - type: partition
             size: 20G
-            wipe: superblock
+            wipe: superblock-recursive
             fstype: ext4
-            preserve: false
             mountpoint: /
-          - id: part3
-            type: partition
-            number: 3
+          - type: partition
             size: 4G
-            wipe: superblock
+            wipe: superblock-recursive
             fstype: swap
-            preserve: false
-          - id: part4
-            type: partition
-            number: 4
+          - type: partition
             size: -1
-            wipe: superblock
+            wipe: superblock-recursive
             fstype: ext4
-            preserve: false
             mountpoint: /home
   updates: all
   power_state:
