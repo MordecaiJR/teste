@@ -18,7 +18,7 @@ autoinstall:
     config:
       - id: disk0
         type: disk
-        match: largest  # Agora detecta automaticamente o maior disco disponível
+        match: largest  # Detecta automaticamente o maior disco disponível (VHD de 100GB)
         ptable: gpt  # Se a VM estiver em modo Legacy (MBR), troque para "mbr"
         wipe: superblock-recursive  # Garante que o disco será formatado corretamente
         overwrite: true  # Força a substituição de qualquer configuração de disco existente
@@ -29,12 +29,12 @@ autoinstall:
             fstype: fat32
             mountpoint: /boot/efi
           - type: partition
-            size: 20G
+            size: 50G
             wipe: superblock-recursive
             fstype: ext4
             mountpoint: /
           - type: partition
-            size: 4G
+            size: 8G
             wipe: superblock-recursive
             fstype: swap
           - type: partition
@@ -46,5 +46,4 @@ autoinstall:
   power_state:
     mode: reboot
     message: "Reiniciando após a instalação..."
-    timeout: 30
-    condition: always
+   
