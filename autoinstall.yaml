@@ -4,13 +4,14 @@ autoinstall:
   identity:
       hostname: patrimonio-desktop
       username: admlocal
-      password: '$y$j9T$KMJgqOBdDSxdh/qddcR37/$WX6BW.IhOOVNzbo6F1M2Q3EmjSQirA.TlqotGW.AlJ2'
+      password: '$y$j9T$TH8Uffo23x//VhuiereEP/$W02uXVLFdleOsnKD9tNNLmZx0kqAymUoHyxsedPBjTD'
       groups: sudo
-  locale: pt_BR.UTF-8
+  locale: pt_BR.utf8
   keyboard:
       layout: br
   timezone: "America/Recife"
   storage:
+      wipe: true
       layout:
           name: custom
       config:
@@ -33,6 +34,6 @@ autoinstall:
                   wipe: superblock-recursive
                   fstype: ext4
                   mountpoint: /home
-updates: all
-shutdown: reboot
+  updates: all
+  shutdown: reboot
   
