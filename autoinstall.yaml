@@ -10,8 +10,6 @@ autoinstall:
   keyboard:
       layout: br
   timezone: "America/Recife"
-  updates: all
-  shutdown: reboot
   storage:
       layout:
           name: custom
@@ -35,4 +33,6 @@ autoinstall:
                   wipe: superblock-recursive
                   fstype: ext4
                   mountpoint: /home
+updates: all
+shutdown: reboot
   
