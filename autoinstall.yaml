@@ -11,17 +11,17 @@ autoinstall:
     layout: br
   timezone: "America/Recife"
   storage:
-    reset-partitions: true  # Remove todas as partições existentes antes da instalação
-    wipe: superblock-recursive  # Apaga todas as partições antes da instalação
+    reset-partitions: true  # Apaga todas as partições antes da instalação
+    wipe: superblock-recursive
     layout:
-      name: custom
+      name: raw  # Alterado de 'custom' para 'raw' para garantir que o instalador não aplique um particionamento automático
     config:
       - id: disk0
         type: disk
-        match: largest  # Detecta automaticamente o maior disco disponível (VHD de 100GB)
-        ptable: gpt  # Se a VM estiver em modo Legacy (MBR), troque para "mbr"
-        wipe: superblock-recursive  # Garante que o disco será formatado corretamente
-        overwrite: true  # Força a substituição de qualquer configuração de disco existente
+        match: largest  # Detecta automaticamente o maior disco disponível
+        ptable: gpt  # Se a VM estiver em modo Legacy (BIOS), troque para "mbr"
+        wipe: superblock-recursive
+        overwrite: true  # Garante que qualquer esquema de partição existente seja apagado antes da instalação
         partitions:
           - type: partition
             size: 1G
@@ -30,20 +30,18 @@ autoinstall:
             mountpoint: /boot/efi
           - type: partition
             size: 50G
-            wipe: superblock-recursive
             fstype: ext4
             mountpoint: /
           - type: partition
             size: 8G
-            wipe: superblock-recursive
             fstype: swap
           - type: partition
             size: -1
-            wipe: superblock-recursive
             fstype: ext4
             mountpoint: /home
   updates: all
   power_state:
     mode: reboot
     message: "Reiniciando após a instalação..."
-   
+    timeout: 30
+    condition: always
