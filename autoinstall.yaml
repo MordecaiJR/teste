@@ -25,7 +25,7 @@ autoinstall:
                   grub_device: true
                   fstype: fat32
                   mountpoint: /boot/efi
-                - size: 20G  # Sistema principal
+                - size: 40G  # Sistema principal
                   wipe: superblock-recursive
                   fstype: ext4
                   mountpoint: /
