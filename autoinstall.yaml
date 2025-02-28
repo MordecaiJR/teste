@@ -1,0 +1,57 @@
+#cloud-config
+autoinstall:
+  version: 1
+  identity:
+      hostname: patrimonio-desktop
+      username: admlocal
+      password: '$y$j9T$KMJgqOBdDSxdh/qddcR37/$WX6BW.IhOOVNzbo6F1M2Q3EmjSQirA.TlqotGW.AlJ2'
+      groups: sudo
+  locale: pt_BR.UTF-8
+  keyboard:
+      layout: br
+  timezone: "America/Recife"
+  updates: all
+  shutdown: reboot
+  storage:
+      layout:
+          name: custom
+      config:
+          - id: disk0
+            type: disk
+            match: largest  # Auto detecta o maior disco disponível
+            ptable: gpt
+            wipe: superblock-recursive
+            partitions:
+                - size: 1G
+                  flag: boot
+                  grub_device: true
+                  fstype: fat32
+                  mountpoint: /boot
+                - size: 60G
+                  wipe: superblock-recursive
+                  fstype: ext4
+                  mountpoint: /
+                - size: -1
+                  wipe: superblock-recursive
+                  fstype: ext4
+                  mountpoint: /home
+  late-commands: #ubuntu-24-04-lts é o script de dominio do ubuntu 24.
+      
+      - echo "#!/bin/bash" | tee /target/etc/profile.d/change-hostname.sh
+      - echo 'while true; do' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '    echo -n "Digite o novo hostname da máquina (etiqueta metálica, sem espaços ou caracteres especiais): "' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '    read NEW_HOSTNAME' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '    if [[ "$NEW_HOSTNAME" =~ ^[a-zA-Z0-9-]+$ ]]; then' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '        hostnamectl set-hostname "$NEW_HOSTNAME"' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '        echo "$NEW_HOSTNAME" > /etc/hostname' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '        sed -i "s/127.0.1.1.*/127.0.1.1    $NEW_HOSTNAME/" /etc/hosts' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '        echo "Hostname alterado para $NEW_HOSTNAME. Reiniciando..."' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '        sleep 3' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '        rm -f /etc/profile.d/change-hostname.sh' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '        reboot' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '    else' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '        echo "O hostname só pode conter letras, números e hífens!"' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '        sleep 2' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo '    fi' | tee -a /target/etc/profile.d/change-hostname.sh
+      - echo 'done' | tee -a /target/etc/profile.d/change-hostname.sh
+      - chmod +x /target/etc/profile.d/change-hostname.sh
