@@ -11,31 +11,35 @@ autoinstall:
     layout: br
   timezone: "America/Recife"
   storage:
-    wipe: true
+    wipe: superblock-recursive  # Garante que todas as partições anteriores sejam apagadas corretamente
     layout:
       name: custom
     config:
       - id: disk0
         type: disk
-        match: sda  # Especificando diretamente para evitar problemas com "largest"
+        match: sda
         ptable: gpt
         wipe: superblock-recursive
         partitions:
           - type: partition
+            number: 1
             size: 1G
             flag: boot
             fstype: fat32
             mountpoint: /boot/efi
           - type: partition
-            size: 20G
+            number: 2
+            size: 40G
             wipe: superblock-recursive
             fstype: ext4
             mountpoint: /
           - type: partition
+            number: 3
             size: 4G
             wipe: superblock-recursive
             fstype: swap
           - type: partition
+            number: 4
             size: -1
             wipe: superblock-recursive
             fstype: ext4
