@@ -24,18 +24,22 @@ autoinstall:
         wipe: superblock-recursive
         overwrite: true
         partitions:
+          # Partição EFI (1.13 GB)
           - type: partition
-            size: 1G
+            size: 1.13G
             flag: boot
             fstype: fat32
             mountpoint: /boot/efi
+          # Partição raiz (50 GB)
           - type: partition
             size: 50G
             fstype: ext4
             mountpoint: /
+          # Partição swap (4 GB)
           - type: partition
-            size: 8G
+            size: 4G
             fstype: swap
+          # Partição home (restante do disco)
           - type: partition
             size: -1
             fstype: ext4
