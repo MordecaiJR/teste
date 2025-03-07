@@ -15,7 +15,7 @@ autoinstall:
     reset-partitions: true
     wipe: superblock-recursive
     layout:
-      name: raw
+      name: lvm
     config:
       - id: disk0
         type: disk
@@ -39,10 +39,11 @@ autoinstall:
           - type: partition
             size: 4G
             fstype: swap
-          # Partição home (restante do disco)
+          # Usando LVM para a partição home (restante do espaço)
           - type: partition
-            size: -1
-            fstype: ext4
+            size: 0  # Usar LVM para alocar o espaço restante
+            lvm: true
+            name: home
             mountpoint: /home
   updates: all
   power_state:
