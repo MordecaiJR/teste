@@ -45,7 +45,6 @@ autoinstall:
             lvm: true
             name: home
             mountpoint: /home
-  updates: all
   power_state:
     mode: reboot
     message: "Reiniciando após a instalação..."
