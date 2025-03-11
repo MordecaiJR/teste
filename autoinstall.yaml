@@ -11,40 +11,51 @@ autoinstall:
   keyboard:
     layout: br
   timezone: "America/Recife"
-  storage:
-    reset-partitions: true
-    wipe: superblock-recursive
+
+  # Configuração de armazenamento (particionamento com LVM)
+  storage: 
     layout:
-      name: raw # Estava como LVM antes
+      name: lvm  # Usamos LVM para particionamento.
+      sizing-policy: all  # Usa o disco inteiro.
+      match:
+        size: largest  # O maior disco será escolhido automaticamente.
+
+    # Configuração das partições
     config:
-      - id: disk0
-        type: disk
-        match: largest
-        ptable: gpt
-        wipe: superblock-recursive
-        overwrite: true
-        partitions:
-          # Partição EFI (1.13 GB)
-          - type: partition
-            size: 1.13G
-            flag: boot
-            fstype: fat32
-            mountpoint: /boot/efi
-          # Partição raiz (50 GB)
-          - type: partition
-            size: 50G
-            fstype: ext4
-            mountpoint: /
-          # Partição swap (4 GB)
-          - type: partition
-            size: 4G
-            fstype: swap
-          # Usando LVM para a partição home (restante do espaço)
-          - type: partition
-            size: 0  # Usar LVM para alocar o espaço restante
-            lvm: true
-            name: home
-            mountpoint: /home
+      # Partição UEFI (FAT32) - Necessário para sistemas UEFI
+      - type: partition
+        id: uefi
+        device: disk0  # Ajuste o nome do dispositivo, como /dev/sda ou /dev/nvme0n1
+        size: 1.13GB  # Tamanho para a partição EFI
+        flag: boot
+        format: fat32
+        mountpoint: /boot/efi  # Mount point para a partição UEFI
+
+      # Partição Swap (LVM)
+      - type: partition
+        id: swap
+        device: disk0
+        size: 4GB
+        format: swap
+        mountpoint: none  # Swap não precisa de mount point, mas é necessário incluí-lo
+
+      # Partição Root (/) - Usando LVM
+      - type: partition
+        id: root
+        device: disk0
+        size: 50GB
+        format: ext4
+        mountpoint: /  # Mount point para a partição raiz (root)
+
+      # Partição Home (restante do espaço) - Usando LVM
+      - type: partition
+        id: home
+        device: disk0
+        size: remaining  # O restante do espaço disponível
+        format: ext4
+        mountpoint: /home  # Mount point para a partição home
+
+  # Configuração do estado de energia após a instalação (reiniciar)
   power_state:
     mode: reboot
     message: "Reiniciando após a instalação..."
